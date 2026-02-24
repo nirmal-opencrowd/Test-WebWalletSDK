@@ -1,0 +1,44 @@
+@import "variables";
+
+.nftBackground {
+    background-color: $listItemsBgColor;
+    border-radius: 7px;
+    min-width: 144px;
+}
+
+.nftCard {
+    border-radius: 10px;
+    border: 1px solid #F2F6FB;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.nftImageDetail {
+    background-color: $listItemsBgColor;
+    border-radius: 5px;
+    margin: auto;
+    margin: 20px;
+    padding: 7px 0px;
+    // width: 180px;
+}
+
+.nftImage {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+}
+
+.tokenDetails {
+    margin-top: 20px;
+    width: 100%
+}
+
+.NFTKeys{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    text-transform: uppercase;
+}

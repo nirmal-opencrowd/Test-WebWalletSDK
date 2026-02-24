@@ -1,0 +1,203 @@
+.darkBg{
+    background-color: #000;
+    border-radius: 7px 7px 0px 0px;
+    min-width: 144px;
+}
+
+.nftImg {
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    height: 125px;
+    justify-content: center;
+    width: 100%;
+}
+
+.nftImg img {
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+
+.NFTContainer{
+    background-color: #DADADA;
+    border-radius: 7px;
+    cursor: pointer;
+    display: inline-block;
+    height: 175px;
+    margin: 0px 0px 11px 15px;
+    max-width: 150px;
+    min-width: 144px;
+    vertical-align: top;
+}
+
+.nftData {
+    padding: 7px 0px 7px 7px;
+    text-align: center;
+}
+
+.tokenText {
+    padding: 5px 0 5px 0;
+}
+
+.NFTBalance{
+    /* display: flex;
+    justify-content: space-between; */
+    padding: 10px 20px;
+}
+
+.NFTBtns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.getNFTBtn{
+    background-color: #18c2ee;
+    border-radius: 5px;
+    /*border: none;*/
+    color: white;
+    padding: 7px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bolder;
+    cursor: pointer;
+    border: 2px solid #18c2ee;
+}
+
+.disabledgetNFTBtn{
+    background-color: #9DE3FA;
+    border-radius: 5px;
+    color: white;
+    padding: 7px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bolder;
+    border: 2px solid #9DE3FA;
+}
+
+.availableNFTs{
+    margin-top: 20px;
+}
+
+/* .header{
+    background-color: white;
+    position: sticky;
+    margin: 0 !important;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    top: 0;
+    width: 100% !important;
+} */
+
+
+.horizontalLine{
+    width: 90%;
+    margin: auto;
+}
+
+.dashedLine{
+    border-top: 1px dashed #000;
+    height: 0px;
+}
+
+.NFTImage{
+    background-color: #000;
+    border-radius: 5px;
+    margin: auto;
+    padding: 7px;
+    width: 180px;
+}
+
+.NFTImageHolder{
+    background-color: #ccc;
+    border-radius: 5px;
+    margin: auto;
+    min-height: 160px;
+    padding: 7px;
+    position: relative;
+    width: 180px;
+}
+
+.NFTImageHolder > .loader {
+    margin-top: 80px;
+}
+
+.NFTImage > img{
+    width: inherit;
+}
+
+.NFTDetail{
+    overflow-y: scroll;
+}
+
+.NFTDescription {
+    padding: 0px 20px;
+}
+
+.extension {
+    display: flex;
+    padding-top: 5px;
+    align-items: center;
+}
+
+.NFTName{
+    padding-left: 20px;
+}
+
+.NFTProperty{
+    padding : 8px 8px;
+    background-color: #f9f9f9;
+    margin: 20px 12px;
+
+}
+
+.NFTProperty > p{
+    display: inline-block;
+    font-size: 17px;
+}
+
+.tokenDetails {
+    padding : 0px 20px 0px 20px;
+    margin-top: 20px;
+}
+
+.tokenDetails > p {
+    display: inline-block;
+    font-size: 17px;
+}
+
+.NFTKeys{
+    margin: 0;
+    display: inline-block;
+    font-size: 14px;
+    color: #18c2ee;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.NFTTransferDetail{
+    display: inline-block;
+    padding-left: 30px;
+}
+
+.loader{
+    color: #18C2EE;
+    font-size: 13px;
+    margin: auto;
+    margin-top: 200px;
+    text-align: center;
+}
+
+.infiniteSrollLoader {
+    color: #18C2EE;
+    font-size: 13px;
+    margin: auto;
+    text-align: center;
+}

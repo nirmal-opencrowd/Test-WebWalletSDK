@@ -1,0 +1,169 @@
+@import 'variables';
+@import 'common.module.scss';
+
+.floatRight {
+    float: right;
+}
+
+.divider-line {
+    margin-top: 5px!important;
+    margin-bottom: 12px!important;; 
+    clear: both;
+}
+
+.amountContainer {
+    text-align: end;
+}
+
+.amount {
+    font-size: $mediumSize;
+    font-weight: 600;
+}
+
+.txnDate {
+    font-size: $mediumSize !important;
+}
+
+.marginAutoW-290 {
+    width: 290px;
+    margin: auto;
+}
+
+.txnListOrgName {
+    @extend .darkBoldText;
+    font-size: $largeSize;
+    float: left;
+    margin-bottom: 0;
+    width: 175px;
+    word-break: break-word;
+}
+
+.txnListCurrencySection {
+    @extend .floatRight;
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 17px;
+    text-align: right;
+}
+
+.thumbnailContainer {
+    width: 175px;
+    float: left;
+}
+
+.thumbnail {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    float: right;
+    margin-bottom: 5px;
+}
+
+.thumbnailImg {
+    height: 50px;
+    width: 90px;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.inline5TopBtmMargin {
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.W-220-5TopBtmMargin {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: 220px;
+}
+
+.dateAndTime {
+    @include ellipsis;
+    color: #a9a9a9;
+    font-size: $mediumSize;
+    font-weight: 500;
+    vertical-align: baseline;
+    max-width: 200px;
+}
+
+.errSuccMsgPosition {
+    text-align: center;
+    margin-left: 25px;
+    position: absolute;
+    top: 415px;
+}
+
+.txnHistoryContainer {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px!important;
+    max-height: 375px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.numOfTxnContainer {
+    padding: 0 10px;
+}
+
+.noDataMsg {
+    padding-top: 100px;
+    text-align: center;
+}
+
+.loader {
+    margin: 90px auto;
+}
+
+.noTxnMsg {
+    padding-top: 100px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.paymentDetails {
+    @extend .lightGreyText;
+    @include ellipsis;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.detail {
+    font-size: $mediumSize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.currencyTextInlist {
+    font-size: ptToPx(16);
+    font-weight: bold;
+}
+
+.currencySign {
+    @extend .currencyTextInlist;
+    width: 9px;
+    height: 13px;
+    display: inline-block;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.txnDate {
+    font-size: 12px!important;
+    color:"#888B8E";
+}
+.mainTitle {
+    font-size: 14px;
+    white-space: nowrap;  /* stay on one line */
+    overflow: hidden;     /* hide extra text */
+    text-overflow: ellipsis; /* show ... */
+    font-weight: 600;
+}

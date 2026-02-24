@@ -1,0 +1,54 @@
+@import 'variables';
+
+.merchantListContainer {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.detail {
+    font-size: ptToPx($veryLargeSize);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.merchantListCell {
+    align-items: center;
+    background-color: #fdfdfd;
+    border-radius: 4px;
+    clear: both;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0px;
+    padding: 5px;
+    width: 97%;
+}
+
+.detailBox {
+    float: right;
+    padding: 0 5px;
+    text-align: left;
+    width: 87%;
+  }
+
+.primaryColoredIcon {
+    color: $primaryColor;
+}
+
+.thumbnailBox {
+    float: left;
+    margin-top: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    width: 27%;
+}
+
+.thumbnail {
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 30px;
+    width: 100%;
+}
+

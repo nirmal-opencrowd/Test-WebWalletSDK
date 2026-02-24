@@ -1,0 +1,26 @@
+$ratio:  (32/36);
+
+@function ptToPx($pt) {
+    @return $pt * $ratio;
+}
+
+// color constants
+$primaryColor: #18C2EE;
+$whiteColor: #FFFFFF;
+$secondaryColor: #a9a9a9;
+$textColor: #333333;
+$headingTextColor: #000000;
+$textPrimaryColor: #1BC3EF;
+$textSecondaryColor: #888B8E;
+$greyBgColor: #f9f9f9;
+
+//backGroundColors
+$listItemsBgColor: #F9F9F9;
+
+
+// text constants
+
+$smallSize : 12px;
+$mediumSize : 14px;
+$largeSize : 16px;
+$veryLargeSize: 18px;

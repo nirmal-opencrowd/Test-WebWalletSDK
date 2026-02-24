@@ -1,0 +1,180 @@
+.App {
+    max-width: 350px;
+    max-height: 800px;
+    min-width: 334px;
+	min-height: 600px;
+}
+
+@keyframes safariPopupBugfix {
+	from {
+		background-color: white;
+	}
+	to {
+		background-color: rgba(255,255,355, 0.99);
+	}
+}
+
+body {
+	animation: safariPopupBugfix infinite 1s;
+}
+
+
+.gettingStarted,
+.linkAccount,
+.linkAccountSuccess {
+    width: 100vw !important;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+.keep-scrolling::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+p {
+    margin: 0;
+}
+a {
+    color: #222222;
+}
+.react-share__ShareButton {
+    display: flex !important;
+}
+.MuiSpeedDialIcon-root {
+    height: 2em !important;
+}
+.MuiSpeedDialIcon-iconOpen {
+    transform: rotate(90deg) !important;
+}
+.MuiButtonBase-root.MuiFab-root.MuiSpeedDial-fab.MuiFab-primary {
+    min-height: 0 !important;
+    height: 2em !important;
+    width: 2em !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+    background-color: transparent;
+    box-shadow: none;
+}
+.MuiSpeedDial-directionLeft .MuiSpeedDial-actions {
+    margin-right: 0 !important;
+}
+.MuiSpeedDial-actions {
+    position: absolute !important;
+}
+
+.loader{
+    color: #18C2EE;
+    font-size: 13px;
+    margin: auto;
+    margin-top: 200px;
+    text-align: center;
+}
+
+.switch-field {
+	display: flex;
+	margin-bottom: 36px;
+	overflow: hidden;
+}
+
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+.switch-field label {
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 14px;
+	line-height: 1;
+	text-align: center;
+	padding: 8px 16px;
+	margin-right: -1px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+	cursor: pointer;
+}
+
+.switch-field input:checked + label {
+	background-color: lightblue;
+	box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}
+
+.errMsg {
+	color: #BE0812 !important;
+	font-weight: 400;
+}
+
+table {
+	font-size: inherit;
+}
+
+.footer{
+	background-color: white;
+	height: 54px;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	z-index: 100;
+	
+}
+
+.footerRightButtonLarge {
+	position: relative;
+	bottom: 15px;
+	left: 130px;
+}
+
+.footerRightButtonSmall {
+	position: relative;
+	bottom: 15px;
+	left: 250px;
+}
+
+.footerRightButtonMedium {
+	position: relative;
+	bottom: 15px;
+	left: 210px;
+}
+
+.footerLeftButtonMedium {
+	position: relative;
+	bottom: 15px;
+	left: 96px;
+}
+
+.backArrow {
+	position: relative;
+	top: 15px;
+}
+
+.backArrowOnly {
+	right: 160px;
+}
+.line {
+	background-color: #B4B4B4;
+	border: none;
+	height: 1px;
+	margin: 10px 0px;
+}

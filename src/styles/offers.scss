@@ -1,0 +1,63 @@
+@import 'common';
+
+.inCircle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.offerScreenContainer {
+    margin-top: 20px;
+}
+
+.offerBox {
+    align-items: center;
+    background-color: #fdfdfd;
+    border-radius: 4px;
+    clear: both;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 5px;
+    width: 100%;
+}
+
+.thumbnailBox {
+    float: left;
+    overflow: hidden;
+    width: 50px;
+}
+
+.thumbnail {
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 30px;
+    width: 100%;
+}
+
+.detail {
+    @include ellipsis;
+    font-size: 1em;
+}
+
+.activateBox {
+    float: right;
+}
+
+.MuiTabs-flexContainer {
+    border-bottom: 2px solid #a9a9a9;
+    justify-content: space-evenly;
+}
+
+.detailBox {
+    float: right;
+    padding: 0 5px;
+    text-align: left;
+    width: 75%;
+}
+
+

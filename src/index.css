@@ -1,0 +1,474 @@
+html,
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+        "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.hide-scollbar::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+.select-action__body {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.select-action__body-header {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 39px;
+    font-size: 28px;
+    text-align: center;
+    margin-top: 65px;
+    color: black;
+}
+
+.select-action__select-buttons {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    margin-top: 100px;
+}
+
+.select-action__select-button {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: space-evenly;
+    justify-content: space-evenly;
+    width: 388px;
+    height: 278px;
+    border: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-left: 22px;
+}
+
+.select-action__select-button .first-time-flow__button {
+    max-width: 221px;
+    height: 44px;
+}
+
+.select-action__button-symbol {
+    color: #c4c4c4;
+    margin-top: 41px;
+}
+
+.select-action__button-content {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 144px;
+}
+
+.select-action__button-text-big {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 28px;
+    font-size: 20px;
+    color: #000000;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.select-action__button-text-small {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 20px;
+    font-size: 14px;
+    color: #7a7a7b;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.select-action button {
+    font-weight: 500;
+    width: 221px;
+}
+
+.confirm-seed-phrase__back-button {
+    margin-bottom: 12px;
+}
+
+.confirm-seed-phrase__shuffled-seed-words {
+    max-width: 575px;
+}
+
+.checkbox-label {
+    display: block;
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 24px;
+    height: 24px;
+    width: 24px;
+    clear: both;
+}
+
+.checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkbox-label .checkbox-custom {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    border: 1px solid #18c2ee;
+}
+
+.checkbox-label input:checked ~ .checkbox-custom {
+    background-color: #ffffff;
+    border-radius: 5px;
+    -webkit-transform: rotate(0deg) scale(1);
+    -ms-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+    border: 1px solid #18c2ee;
+}
+
+.checkbox-label .checkbox-custom::after {
+    position: absolute;
+    content: "";
+    left: 12px;
+    top: 12px;
+    height: 0px;
+    width: 0px;
+    border-radius: 5px;
+    border: solid #009bff;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(0deg) scale(0);
+    -ms-transform: rotate(0deg) scale(0);
+    transform: rotate(0deg) scale(0);
+    opacity: 1;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+}
+
+.checkbox-label input:checked ~ .checkbox-custom::after {
+    -webkit-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+    left: 8px;
+    top: 4px;
+    width: 4px;
+    height: 8px;
+    border: solid #009bff;
+    border-width: 0 2px 2px 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+/* For Ripple Effect */
+
+.checkbox-label .checkbox-custom::before {
+    position: absolute;
+    content: "";
+    left: 10px;
+    top: 10px;
+    width: 0px;
+    height: 0px;
+    border-radius: 5px;
+    border: 2px solid #ffffff;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
+.checkbox-label input:checked ~ .checkbox-custom::before {
+    left: -3px;
+    top: -3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    -webkit-transform: scale(3);
+    -ms-transform: scale(3);
+    transform: scale(3);
+    opacity: 0;
+    z-index: 999;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+}
+
+.button-done {
+    background-color: #18c2ee;
+    border-radius: 5px;
+    /*border: none;*/
+    color: white;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bolder;
+    cursor: pointer;
+    border: 2px solid #18c2ee;
+}
+
+.button-disabled {
+    cursor: not-allowed;
+    opacity: .35;
+}
+
+.button-cancel {
+    background-color: #b8b8b8;
+    border-radius: 5px;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 7px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bolder;
+    cursor: pointer;
+    border: 2px solid #b8b8b8;
+}
+
+.dropdown {
+    width: 100%;
+    border: 2px solid #aaa;
+    margin: 8px 0;
+    outline: none;
+    padding: 8px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.Dropdown-control.Dropdown-controls {
+    border: none;
+}
+
+.Dropdown-root {
+    width:460px;
+    color: #ccc;
+    border: 2px solid #aaa;
+    box-sizing: border-box;
+    transition: 0.3s;
+    outline: none;
+    /*margin-top: 5px;*/
+}
+
+.Dropdown-root:hover {
+    width:460px;
+    border-color: #18c2ee;
+    box-shadow: 0 0 8px 0 #18c2ee;
+}
+
+
+.inputWithIcon {
+    position: relative;
+}
+
+.inputWithIcon i {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    padding: 9px 8px;
+    color: #aaa;
+    transition: 0.3s;
+}
+
+.inputWithIcon input[type="text"]:focus + i {
+    color: #18c2ee;
+}
+
+.inputWithIcon input[type="password"]:focus + i {
+    color: #18c2ee;
+}
+
+.inputWithIcon.inputIconBg i {
+    background-color: #aaa;
+    color: #fff;
+    padding: 9px 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+.inputWithIcon.inputIconBg input[type="text"]:focus + i {
+    color: #fff;
+    background-color: #18c2ee;
+}
+
+.inputWithIcon.inputIconBg input[type="password"]:focus + i {
+    color: #fff;
+    background-color: #18c2ee;
+}
+
+#copy-pubKey:hover {
+    background: #e6ffff;
+}
+
+hr.solid {
+    border-top: 1.5px solid #18c2ee;
+}
+
+.alert.error.browser {
+    width: 300px;
+    border-style: solid 15px;
+    padding: 15px;
+    background-color: #fff6f6;
+    box-shadow: 0 0 0 1px #e0b4b4 inset, 0 0 0 0 transparent;
+    color: #9f3a38;
+}
+
+.alert.error.extension {
+    width: 250px;
+    border-style: solid 15px;
+    padding: 15px;
+    background-color: #fff6f6;
+    box-shadow: 0 0 0 1px #e0b4b4 inset, 0 0 0 0 transparent;
+    color: #9f3a38;
+}
+
+.alert.success.browser {
+    width: 300px;
+    border-style: solid 15px;
+    padding: 15px;
+    background-color: #f7fff6;
+    box-shadow: 0 0 0 1px #a3c293 inset,0 0 0 0 transparent;
+    color: #2c662d;
+}
+
+.alert.success.extension {
+    width: 250px;
+    border-style: solid 15px;
+    padding: 15px;
+    background-color: #f7fff6;
+    box-shadow: 0 0 0 1px #a3c293 inset,0 0 0 0 transparent;
+    color: #2c662d;
+}
+
+.loader,
+.loader:after {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+    max-width: 200px;
+}
+.loader {
+    /*font-size: 10px;*/
+    /*position: relative;*/
+    /*border-top: 1.1em solid rgba(0, 88, 99, 0.2);*/
+    /*border-right: 1.1em solid rgba(0, 88, 99, 0.2);*/
+    /*border-bottom: 1.1em solid rgba(0, 88, 99, 0.2);*/
+    /*border-left: 1.1em solid #18C2EE;*/
+    /*-webkit-transform: translateZ(0);*/
+    /*-ms-transform: translateZ(0);*/
+    /*transform: translateZ(0);*/
+    /*-webkit-animation: load8 1.1s infinite linear;*/
+    /*animation: load8 1.1s infinite linear;*/
+}
+@-webkit-keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.btn {
+    background-color: #18c2ee;
+    border-radius: 5px;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 7px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bolder;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid #18c2ee;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.container .btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    top: 60.3%;
+    left: 26%;
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}

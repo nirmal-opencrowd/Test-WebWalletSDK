@@ -1,0 +1,489 @@
+@import 'variables';
+
+@mixin button($color, $background, $borderRadius) {
+    background-color: $background;
+    border-radius: $borderRadius;
+    border: none;
+    color: $color;
+    cursor: pointer;
+}
+
+// LINKS AND LINK TEXT
+
+a {
+    cursor: pointer;
+}
+
+.blueBoldLink {
+    @extend .blueBoldText;
+    cursor: pointer;
+    font-size: $largeSize;
+}
+
+.blueLinkText {
+    @extend .blueText;
+    cursor: pointer;
+}
+
+// TEXT & FONTS
+.textCenter {
+    text-align: center;
+}
+
+.blueText {
+    color: $textPrimaryColor;
+}
+
+.blueBoldText {
+    @extend .blueText;
+    font-weight: 700 !important;
+}
+
+
+@mixin ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.darkBoldText {
+    color: $textColor;
+    font-weight: 700 !important;
+}
+
+.smallSizeText {
+    font-size: $smallSize !important;
+}
+
+.mediumSizedText {
+    font-size: $mediumSize !important;
+}
+
+.largeSizeText {
+    font-size: $largeSize !important;
+}
+
+.veryLargeSizedText {
+    font-size: $veryLargeSize !important;
+}
+
+.lightGreyText {
+    color: $textSecondaryColor;
+}
+
+.boldGreyText {
+    color: $textSecondaryColor;
+    font-weight: 700 !important;
+}
+
+.underlinedText {
+    text-decoration: underline;
+}
+
+.linedThroughText {
+    text-decoration: line-through;
+}
+
+.upperCase {
+    text-transform: uppercase;
+}
+
+.ellipsisAfterThreeLines {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: "2.1em";
+    font-weight: 300;
+}
+
+.cursorPointer {
+    cursor: pointer !important;
+}
+
+.flexSpaceBetween {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+// HEADINGS
+
+.pageHeading {
+    @include ellipsis;
+    color: $headingTextColor;
+    font-size: 18px !important ;
+    font-weight: 450;
+    max-width: 250px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.subHeading {
+    font-size: $mediumSize !important;
+    font-weight: 600 !important;
+}
+
+.balanceHeading {
+    color: #000;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.balance {
+    color: $whiteColor;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+}
+
+.smallWhiteBalanceTxt {
+    color: $whiteColor;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+.conversionBalance {
+    color: $whiteColor;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+
+.droppCreditBalance {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 0 10px;
+}
+
+// .balanceHeading {
+//     font-size: ptToPx(20);
+//     font-weight: 600;
+//     margin-right: 8px;
+//     margin-top: 6px;
+// }
+
+// .balance {
+//     color: $whiteColor;
+//     font-size: ptToPx(36);
+//     font-weight: 600;
+//     // line-height: 1;
+// }
+
+.dctBalance {
+    color: $whiteColor;
+    font-size: ptToPx(28);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+// BUTTONS
+
+.circularWhiteBtn {
+    background-color: #fff;
+    border: none;
+    border-radius: 20px;
+    color: #1BC3EF;
+    cursor: pointer;
+    font-size: $largeSize;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    width: 100%;
+    &:hover {
+        background-color: #fff;
+    }
+}
+
+.circularBtn {
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: $largeSize;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.primaryBtn {
+    background-color: #18c2ee;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+.secondaryBtn {
+    background-color: #fff;
+    border: 1px solid #1BC3EF;
+    /* Green */
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonDisabled {
+    cursor: not-allowed;
+    opacity: .35;
+}
+
+.largeWhiteBtn {
+    @include button($primaryColor, $whiteColor, 20px);
+    font-size: ptToPx(16);
+    font-weight: 600;
+    height: ptToPx(46);
+    padding: 12px;
+    width: ptToPx(123);
+}
+
+// CONTAINERS AND SECTIONS
+.commonMainContainer {
+    padding: 20px;
+}
+
+.droppScrollableSection {
+    border-radius: 8px;
+    // height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    // padding-top: 70px;
+    // z-index: -2;
+}
+
+.lightGreyContainer {
+    background-color: #fdfdfd;
+    padding: 5px;
+}
+
+.subContainer {
+    margin: 0 10px;
+    width: 94%;
+}
+
+.transactionList {
+    // width: 87%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.transactionItem {
+    @extend .cursorPointer;
+    background-color: $listItemsBgColor;
+    margin: 0px auto;
+    min-height: 90px;
+    max-width: 290px;
+    padding: 0px 10px;
+}
+
+.description {
+    @include ellipsis;
+    color: $textSecondaryColor;
+    font-size: $largeSize !important;
+    text-align: left;
+    width: 100%;
+}
+
+.blueContainer {
+    background-color: $primaryColor;
+    border-radius: 20px;
+    padding: 12px;
+    min-height: 75px;
+    width: 100%;
+}
+
+.fundInfoContainer {
+    background-color: $primaryColor;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.greyListContainer {
+    background-color: $listItemsBgColor;
+    border-radius: 15px;
+    margin: 10px 0px 15px;
+    padding: 10px,
+}
+
+.borderedBoxDashed {
+    border: 2px dashed #18C2EE;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    padding: 1em;
+    width: 100%;
+}
+
+
+// ICONS AND LOGO STYLING
+
+.whiteIcon{
+    @extend .cursorPointer;
+    color: $whiteColor;
+}
+
+.icon {
+    @extend .cursorPointer;
+}
+
+.primaryColorIcon {
+    cursor: pointer;
+    color: $primaryColor;
+}
+    
+.primaryColorSmallIcon {
+    cursor: pointer;
+    color: $primaryColor;
+    font-size: $largeSize !important;
+}
+
+.droppLogoContainer {
+    background-color: #fff;
+    flex-grow: 1 !important;
+    height: 58px;
+    margin-bottom: 15px !important;
+    margin-top: -26px !important;
+    padding: 10px;
+    position: fixed;
+    text-align: center;
+    top: 25px;
+    width: 100%;
+    z-index: -1;
+}
+
+.hbarImg {
+    height: 18px;
+    vertical-align: baseline;
+    padding-right: 2px;
+}
+
+.footerIconLeft {
+    float: left;
+    height: 30px;
+    margin: 10px;
+    margin-left: 0;
+}
+
+// Line
+
+.horizontalLine {
+    height: 1px;
+    background-color: #888B8E;
+    width: 100%;
+    border: none;
+}
+
+.lightHorizontalLine {
+    width: 100%;
+    height: 1px;
+    background-color: #2FC8F0;
+    border: none;
+}
+
+.lightGreyHorizontalLine {
+    width: 100%;
+    height: 1px;
+    background-color: #f9f9f9;
+    border: none;
+}
+
+.divider {
+    margin-top: 12px !important;
+    clear: both !important;
+    width: 100%;
+}
+
+// Modal
+
+.modalAtCenter {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.modalContainer {
+    background-color: #FFFFFF;
+    border: 0;
+    padding: 15px;
+    width: 250px;
+}
+
+// INPUT FIELDS
+
+.dropdownFormControl {
+    width: 93%;
+}
+
+.MuiOutlinedInput-root {
+    border-radius: 45px;
+}
+
+// .roundedInputField {
+//     border-radius: 20px !important;
+// }
+
+.roundedInputField {
+    .MuiOutlinedInput-root {
+      border-radius: 20px !important;
+    }
+}  
+
+.inputFieldWithGreyBg {
+    background-color: $greyBgColor !important;
+    width: 100%;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 2;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: center; /* centers horizontally */
+    align-items: center;
+}
+
+.footerContainer{
+    margin: 10px;
+}
+
+// Typography and text
+
+.roundedBorderedTypography {
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    border: 1px solid #888B8E;
+    // color: #888B8E;
+    padding: 7px 0px 7px 15px;
+}
+
+.phoneInputField {
+    margin-left: 2px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #F8F8F8;
+    height: 40px;
+}
+
+.customFlexSpacing {
+  margin-top: 8px;      /* mt: 1 (theme spacing, 1*8px) */
+  margin-bottom: 16px;  /* mb: 2 (theme spacing, 2*8px) */
+  display: flex;
+  gap: 10px;
+}
+
+.otpInputStyle {
+  text-align: center;
+  font-size: 16px;
+  width: 15px;
+  height: 15px;
+}
+.numOfTxnContainer{
+    padding: 0 10px;
+}

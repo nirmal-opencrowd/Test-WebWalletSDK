@@ -1,0 +1,1 @@
+export const PP =`<iframe style="height:325px" src="https://dropp.cc/user-agreement-plain-text/#privacy"></iframe>`;

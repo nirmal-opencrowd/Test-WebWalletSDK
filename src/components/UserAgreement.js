@@ -1,0 +1,1 @@
+export const TC = `<iframe style="height:325px" src="https://dropp.cc/user-agreement-plain-text/#user-agreement"></iframe>`;
