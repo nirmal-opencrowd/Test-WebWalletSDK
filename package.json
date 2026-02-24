@@ -1,0 +1,116 @@
+{
+  "name": "dropp-web-wallet-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dropp Web Wallet SDK - A web-based wallet for Hedera Hashgraph payments, converted from the Dropp Chrome Extension.",
+  "dependencies": {
+    "@hashgraph/hedera-wallet-connect": "^1.4.2",
+    "@hashgraph/proto": "^2.15.0",
+    "@hashgraph/sdk": "^2.56.0",
+    "@json-rpc-tools/utils": "^1.7.6",
+    "@magic-ext/hedera": "^1.0.4",
+    "@material-ui/core": "^4.9.13",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@stripe/stripe-js": "^1.46.0",
+    "@walletconnect/modal": "^2.7.0",
+    "@walletconnect/modal-core": "^2.7.0",
+    "@walletconnect/qrcode-modal": "^1.8.0",
+    "@walletconnect/sign-client": "^2.17.3",
+    "@walletconnect/utils": "^2.17.3",
+    "@walletconnect/web3wallet": "^1.16.1",
+    "axios": "^0.24.0",
+    "bip39": "^3.1.0",
+    "buffer": "^5.6.0",
+    "buffer-alloc": "^1.2.0",
+    "camelcase": "^5.3.1",
+    "crypto-js": "^4.0.0",
+    "currency-symbol-map": "^5.0.1",
+    "dayjs": "^1.8.35",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
+    "history": "^4.10.1",
+    "html-react-parser": "^1.0.0",
+    "jimp": "^1.6.0",
+    "js-base64": "^2.6.2",
+    "jsqr": "^1.4.0",
+    "magic-sdk": "^29.0.6",
+    "moment": "^2.29.1",
+    "nano-time": "^1.0.0",
+    "node-forge": "^0.10.0",
+    "query-string": "^6.13.1",
+    "react": "^16.13.1",
+    "react-alert": "^7.0.1",
+    "react-alert-template-basic": "^1.0.0",
+    "react-app-polyfill": "^1.0.6",
+    "react-burger-menu": "^2.6.14",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "^16.13.1",
+    "react-dropdown": "^1.7.0",
+    "react-html-parser": "^2.0.2",
+    "react-iframe": "^1.8.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-json-view": "^1.21.3",
+    "react-loader-spinner": "^3.1.14",
+    "react-otp-input": "^3.1.1",
+    "react-phone-input-2": "^2.15.1",
+    "react-plaid-link": "^3.5.1",
+    "react-qr-code": "^2.0.3",
+    "react-qr-reader": "^2.2.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
+    "react-share": "^4.4.1",
+    "react-sidebar": "^3.0.2",
+    "react-sliding-pane": "^7.0.0",
+    "react-tooltip": "^4.2.6",
+    "resolve": "1.15.0",
+    "sass": "^1.93.2",
+    "semantic-ui-react": "^2.0.1",
+    "semver": "6.3.0",
+    "sha256": "^0.2.0",
+    "tweetnacl": "^1.0.3",
+    "utf8": "^3.0.0",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "prettier": "^2.1.0"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "react-hooks"
+    ],
+    "extends": [
+      "react-app"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    },
+    "env": {
+      "browser": true
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
+}
