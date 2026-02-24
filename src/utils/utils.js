@@ -50,9 +50,10 @@ import {
     FRAUD_ERROR_CODES,
     DEV_DRAGONGLASS_URL,
     PROD_DRAGONGLASS_URL,
-    DEFAULT_DROPP_PIN
- } from "./constants";
- import { hexToBytes } from "./p2phelper";
+    DEFAULT_DROPP_PIN,
+    APP_VERSION
+} from "./constants";
+import { hexToBytes } from "./p2phelper";
 
 import * as localstorage from "./local-storage";
 import { getDroppConfig, resetUserDetails } from "./../api/index";
@@ -61,9 +62,9 @@ import { Transaction, PublicKey, SignerSignature } from "@hashgraph/sdk";
 import { magicInstance } from "../components/MagicLink/index";
 import { MagicProvider } from "../components/MagicLink/MagicProvider";
 import { MagicWallet } from "../components/MagicLink/MagicWallet";
+import { webStorage, messageBus } from "../services/walletService";
 
 var CryptoJS = require("crypto-js");
-/* global chrome */
 
 dayjs.extend(AdvancedFormat);
 dayjs.extend(RelativeTime);
@@ -83,7 +84,6 @@ export const decodeBase64 = data => forge.util.decode64(data);
 
 export const sign = (data, priv) => {
     let encoding = "utf8";
-    //let priv = "da606f0a2854e9db8b18836362f126d6eb73e99c85f5ffd52096bf0db31f05f0";
     var privateKey = forge.util.hexToBytes(priv);
     let signature = ed25519.sign({
         message: data,
@@ -125,9 +125,7 @@ export const casualTimeToExpiration = function (seconds) {
 };
 
 export const getQueryParams = function (url, force) {
-    // In extension: chrome.extension.getViews({ type: "popup" })
-    // In webapp: skip getViews, just parse URL
-    const regex = /[?&]([^=#]+)=([^&#]*)/g;
+    const regex = /[?&]([^=#]+)=([&#]*)/g;
     url = decodeURI(url);
     let params = {};
     let match;
@@ -156,14 +154,6 @@ export const getBaseAPIUrl = async (type, switchToSandbox) => {
     if (data.env == "sandbox") {
         return baseSandboxAPIUrl;
     } else if (data.env == "testnet") {
-        // if (type == "USDC") {
-        //     return baseUSDCDevAPIUrl;
-        // } else if (type == "qrPolling") {
-        //     return baseDevQrPollingUrl;
-        // } else if (type == "rps") {
-        //     return baseDevRPSAPIUrl;
-        // }
-        // return baseDevAPIUrl;
         return baseQAAPIUrl;
     } else if (data.env == "qa") {
         return switchToSandbox ? baseSandboxAPIUrl : baseQAAPIUrl;
@@ -305,7 +295,6 @@ export const getDGEndPoint = async () => {
     return PROD_DRAGONGLASS_URL;
 };
 
-
 export const getCurrencyDecimal = (currency) => {
     if (currency == "HBAR") {
         return Math.pow(10, 8);
@@ -320,15 +309,6 @@ export const getCurrencyDecimal = (currency) => {
 };
 
 export const getCurrencyDecimalPlaces = (currency) => {
-    // if (currency == "HBAR") {
-    //     return 8;
-    // } else if (currency == "USDC") {
-    //     return 6;
-    // } else if (currency == "DCT") {
-    //     return 4;
-    // } else if (currency == "CARAT") {
-    //     return 2;
-    // }
     if(currency) {
         return 4;
     }
@@ -404,7 +384,6 @@ export const displayAmount = (amt, decimalPlaces, allowTrailingZeroes) => {
 
     return main + ((!decimalPoints || decimalPoints == "00" || decimalPoints == "0000" ) ? "" : `.${decimalPoints}`) ;
 };
-
 
 export const getAmountWithDecimals = (amt, minDecimals) => {
     let amtStr = amt + "";
@@ -491,8 +470,9 @@ export const getBrowserDetail = () => {
 }
 
 export const droppVersion = () => {
-    // Version info not available in webapp; return empty or static string
-    return '';
+    // In webapp: use APP_VERSION constant instead of chrome.runtime.getManifest()
+    const version = APP_VERSION || '1.0.0';
+    return `v${version}`;
 }
 
 export const isCrypto = (currency) => {
@@ -519,15 +499,11 @@ export const getCleanNFTUrl = (url) => {
 
 export const getDroppUserAgent = () => {
     const detail = getBrowserDetail();
-    return `DroppExtension/(${droppVersion()}) (${detail.browserName} / ${detail.browserVersion})`;
+    return `DroppWebApp/(${droppVersion()}) (${detail.browserName} / ${detail.browserVersion})`;
 };
 
 const getPlatform = () => {
   if (typeof navigator === "undefined") return "unknown";
-  const ua = navigator.userAgent;
-  if (ua.includes("Safari") && !ua.includes("Chrome")) return "safari_extension";
-  if (ua.includes("Chrome")) return "chrome_extension";
-  if (ua.includes("Firefox")) return "firefox_extension";
   return "web";
 };
 
@@ -576,10 +552,14 @@ export const toStandardCase = (word) => {
 }
 
 export const resetLocalData = async (cb) => {
-    await localstorage._remove("_encrypted");
-    await localstorage._remove("_decrypted");
-    await localstorage._clear();
-    await localstorage.decrypted.clear();
+    webStorage.remove("_encrypted");
+    webStorage.remove("_decrypted");
+    // Clear all webapp localStorage keys
+    try {
+        window.localStorage.clear();
+    } catch (e) {
+        console.error("Error clearing localStorage:", e);
+    }
     resetUserDetails(); // reset local user details
     if (cb) {
         cb();
@@ -588,6 +568,7 @@ export const resetLocalData = async (cb) => {
 
 export const addStripeLib = async (cb) => {
     return new Promise((resolve, reject) => {
+        // In webapp: load Stripe from a relative path or CDN instead of chrome.runtime.getURL
         const url = "/vendor/stripe.js";
         const existingScript = document.querySelectorAll(`script[src*="${url}"]`);
         if (existingScript && existingScript.length == 0) {
@@ -612,6 +593,7 @@ export const addStripeLib = async (cb) => {
 
 export const addPlaidLib = async () => {
     return new Promise((resolve, reject) => {
+        // In webapp: load Plaid from a relative path or CDN instead of chrome.runtime.getURL
         const url = "/vendor/plaid/link-initialize.js";
         const existingScript = document.querySelectorAll(`script[src*="${url}"]`);
         if (existingScript && existingScript.length == 0) {
@@ -631,30 +613,9 @@ export const addPlaidLib = async () => {
     });
 };
 
-// export const addWafLib = async () => {
-//     return new Promise((resolve, reject) => {
-//         const url = chrome.runtime.getURL(`/vendor/waf/${BUILD_ENV}.challenge.min.js`);
-//         const existingScript = document.querySelectorAll(`script[src*="${url}"]`);
-//         if (existingScript && existingScript.length == 0) {
-//             let scriptElem = document.createElement("script");
-//             scriptElem.src = url;
-//             document.body.appendChild(scriptElem);
-//         }
-
-//         const intervalId = setInterval(() => {
-//             if (window.AwsWafIntegration) {
-//                 window.awsWafCookieDomainList = ['.main.qa.dropp.cc', 'main.qa.dropp.cc'];
-//                 if (intervalId) {
-//                     clearInterval(intervalId);
-//                 }
-//                 resolve(window.AwsWafIntegration);
-//             }
-//         }, 100);
-//     });
-// };
-
 export const updateBadgeText = (text) => {
-    // Badge text not supported in webapp; no-op
+    // Badge text is a browser extension concept — no-op in webapp
+    // Could be replaced with document.title or favicon badge if needed
 };
 
 export const roundUpAmtToTwoDecimals = (amt) => {
@@ -675,12 +636,13 @@ export const sendMessage = async (encryptedData, cb, env) => {
 
     try {
         const localEnv = await getENV();
-        chrome.runtime.sendMessage(
-            { type: "link", _encrypted: encryptedData, _decrypted: decrypted, env: env ? env : localEnv && localEnv.env }, // Need to take env
-            function (response) {
-                cb?.() // eslint-disable-line
-            }
-        );
+        // In webapp: use messageBus instead of chrome.runtime.sendMessage
+        messageBus.emit("link", {
+            _encrypted: encryptedData,
+            _decrypted: decrypted,
+            env: env ? env : localEnv && localEnv.env
+        });
+        cb?.(); // eslint-disable-line
     } catch (e) {
         cb?.(); // eslint-disable-line
     }
@@ -818,29 +780,54 @@ export const getEncodedTransactionBytes = async (transactionBodyBytes, signature
             encoding,
             privateKey,
         });
-
-        let signaturePair = SignaturePair.create({ed25519: signature });
-        signaturePair.pubKeyPrefix = Buffer.from(hexToBytes(signatures.publicKey));
-        signatureMap = SignatureMap.create();
-        signatureMap.sigPair.push(signaturePair);
-        const transaction = proto.Transaction.create({
-            bodyBytes : transactionBodyBytes,
-            sigMap : signatureMap
+        let publicKeyBytes = forge.util.hexToBytes(signatures.publicKey);
+        const signerSignature = new SignerSignature({
+            publicKey: PublicKey.fromBytesED25519(publicKeyBytes),
+            signature: signature,
+            accountId: signatures.accountId,
         });
-
-        const transactionBytes = proto.Transaction.encode(transaction).finish();
-        return btoa(String.fromCharCode(...new Uint8Array(transactionBytes)));
+        signatureMap = signerSignaturesToSignatureMap([signerSignature]);
+        if (onlySignatures) {
+            return signatureMap;
+        }
     }
+    if (!signatureMap) {
+        throw new Error("No signature map available");
+    }
+    let protoTxn = proto.Transaction.create({
+        bodyBytes: Buffer.from(transactionBodyBytes),
+        sigMap: signatureMap,
+    });
+    let encodedTxnBytes = proto.Transaction.encode(protoTxn).finish();
+    return uint8ArrayToBase64(encodedTxnBytes);
 };
 
-export const getFormattedLocalTime = () => {
-  const now = new Date();
+export const signMessageWithMagic = async (message, userDetails) => {
+    const magic = await magicInstance();
+    const userData = await localstorage.decrypted.get();
+    if (userData && userData.magicUser) {
+        const isLoggedIn = await magic.user.isLoggedIn();
+        if (!isLoggedIn) {
+            await magic.auth.loginWithSMS({ phoneNumber: userDetails.mobileNumber });
+        }
+        const prefixedMessage = prefixMessageToSign(message);
+        const magicWallet = await getMagicWallet();
+        const signatureBytes = await magicWallet.sign([Buffer.from(prefixedMessage)]);
+        const base64Signature = uint8ArrayToBase64(signatureBytes[0]);
+        return base64Signature;
+    }
+    return null;
+};
 
+export const toLocalTimezone = (utcTime) => {
   const pad = n => String(n).padStart(2, "0");
-
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
-    now.getDate()
-  )} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(
-    now.getSeconds()
-  )}`;
+  const d = new Date(utcTime);
+  const yyyy = d.getFullYear();
+  const MM   = pad(d.getMonth() + 1);
+  const dd   = pad(d.getDate());
+  const hh   = pad(d.getHours());
+  const mm   = pad(d.getMinutes());
+  const ss   = pad(d.getSeconds());
+  return \
+`${yyyy}-${MM}-${dd}T${hh}:${mm}:${ss}`;
 };
