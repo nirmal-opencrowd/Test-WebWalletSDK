@@ -1,117 +1,57 @@
-/* global chrome */
+/**
+ * Web-compatible local storage module.
+ * Replaces chrome.storage.local with window.localStorage equivalents.
+ */
 
 export const _get = key => {
     return new Promise((resolve, reject) => {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-            chrome.storage.local.get([key], result => {
-                const err = checkForError();
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        } else if (typeof window !== 'undefined' && window.localStorage) {
-            try {
-                const value = window.localStorage.getItem(key);
-                resolve({ [key]: value ? JSON.parse(value) : undefined });
-            } catch (e) {
-                reject(e);
-            }
-        } else {
-            reject(new Error('No storage available'));
+        try {
+            const value = window.localStorage.getItem(key);
+            resolve({ [key]: value ? JSON.parse(value) : undefined });
+        } catch (e) {
+            reject(e);
         }
     });
 };
 
 export const _set = data => {
     return new Promise((resolve, reject) => {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-            chrome.storage.local.set(data, () => {
-                const err = checkForError();
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
+        try {
+            Object.keys(data).forEach(key => {
+                window.localStorage.setItem(key, JSON.stringify(data[key]));
             });
-        } else if (typeof window !== 'undefined' && window.localStorage) {
-            try {
-                Object.keys(data).forEach(key => {
-                    window.localStorage.setItem(key, JSON.stringify(data[key]));
-                });
-                resolve();
-            } catch (e) {
-                reject(e);
-            }
-        } else {
-            reject(new Error('No storage available'));
+            resolve();
+        } catch (e) {
+            reject(e);
         }
     });
 };
 
 export const _clear = () => {
     return new Promise((resolve, reject) => {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-            chrome.storage.local.clear(() => {
-                const err = checkForError();
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        } else if (typeof window !== 'undefined' && window.localStorage) {
-            try {
-                window.localStorage.clear();
-                resolve();
-            } catch (e) {
-                reject(e);
-            }
-        } else {
-            reject(new Error('No storage available'));
+        try {
+            window.localStorage.clear();
+            resolve();
+        } catch (e) {
+            reject(e);
         }
     });
 };
 
 export const _remove = key => {
     return new Promise((resolve, reject) => {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-            chrome.storage.local.remove([key], () => {
-                const err = checkForError();
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        } else if (typeof window !== 'undefined' && window.localStorage) {
-            try {
-                window.localStorage.removeItem(key);
-                resolve();
-            } catch (e) {
-                reject(e);
-            }
-        } else {
-            reject(new Error('No storage available'));
+        try {
+            window.localStorage.removeItem(key);
+            resolve();
+        } catch (e) {
+            reject(e);
         }
     });
 };
 
 export const checkForError = () => {
-    if (typeof chrome === 'undefined' || !chrome.runtime) {
-        return;
-    }
-    const lastError = chrome.runtime.lastError;
-    if (!lastError) {
-        return;
-    }
-    // if it quacks like an Error, its an Error
-    if (lastError.stack && lastError.message) {
-        return lastError;
-    }
-    // repair incomplete error object (eg chromium v77)
-    return new Error(lastError.message);
+    // No chrome.runtime.lastError in web context — always return undefined (no error)
+    return undefined;
 };
 
 class Favorites {
@@ -150,6 +90,7 @@ class NewOffers {
     };
 }
 export const newOffers = new NewOffers();
+
 class Decrypted {
     get = async () => {
         const data =
@@ -162,15 +103,12 @@ class Decrypted {
         return await _set({ _decrypted: decrypted });
     };
     clear = async () => {
-        return await _clear("_decrypted");
+        return await _remove("_decrypted");
     };
-    // contains = async (obj = {}) => {
-    //     const self = await this.get();
-    //     const search = val => {};
-    // };
 }
 
 export const decrypted = new Decrypted();
+
 class Dapps {
     getDapps = async () => {
         return (await _get("_dapps"))._dapps || {};
