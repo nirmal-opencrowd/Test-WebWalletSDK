@@ -97,51 +97,55 @@ class WalletConnectSigner {
     return this.publicKey;
   }
 
-  signTransaction(transaction, showPopup, metaData) {
+signTransaction(transaction, showPopup, metaData) {
     showPopup = showPopup ? showPopup : this.approvalPopup;
     metaData = metaData ? metaData : this.connector.metadata;
     return new Promise(async (resolve, reject) => {
       const request = {signTransaction: true, transaction: JSON.stringify(transaction), metaData: JSON.stringify(metaData)};
       let userData = getDecrypted();
-        if (userData) {
-          showPopup({ isLoggedIn: true, ...request});
-        } else {
-            let encrypted = getEncrypted();
-            encrypted ? showPopup({ isLoggedIn: false, isLocked: true, ...request }) : showPopup({ isLoggedIn: false });
-        }
-      });
-      function messageListener(request, sender, sendResponse) {
-        if (request.type === "wcSignReject") {
-          resolve({...request.request});
-        }
-        if (request.type === "wcSignApproved") {
-          const localData = getDecrypted();
-            async function resolveSignedTransaction() {
-              let signedTransaction;
-              if (localData && localData.magicUser) {
-                const magic = await magicInstance();
-                const isLoggedIn = await magic.user.isLoggedIn();
-                if (!isLoggedIn) {
-                  // Handle not logged in case
-                }
-                const magicWallet = await getMagicWallet();
-                // signedTransaction = await magicWallet.signTransaction(transaction);
-                signedTransaction = await transaction.signWithSigner(magicWallet);
-                resolve(signedTransaction);
-              } else {
-                const isTestnet = await isTestnetUser();
-                const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
-                client.setOperator(AccountId.fromString(request.request.accountId), PrivateKey.fromString(localData.privateKey)); // Set your account ID and private key
-                signedTransaction = await transaction.signWithOperator(client);
-                resolve(signedTransaction);
-              }
-            }
-            resolveSignedTransaction();
-          });
-        }
-        sendResponse({status: 'ok'});
+      if (userData) {
+        showPopup({ isLoggedIn: true, ...request});
+      } else {
+        let encrypted = getEncrypted();
+        encrypted ? showPopup({ isLoggedIn: false, isLocked: true, ...request }) : showPopup({ isLoggedIn: false });
       }
-      // Messaging not supported in webapp; no-op
+
+      // Listen for sign approval/rejection via messageBus
+      const onReject = (data) => {
+        messageBus.off("wcSignReject", onReject);
+        messageBus.off("wcSignApproved", onApprove);
+        resolve({...data.request});
+      };
+
+      const onApprove = async (data) => {
+        messageBus.off("wcSignReject", onReject);
+        messageBus.off("wcSignApproved", onApprove);
+        const localData = getDecrypted();
+        try {
+          let signedTransaction;
+          if (localData && localData.magicUser) {
+            const magic = await magicInstance();
+            const isLoggedIn = await magic.user.isLoggedIn();
+            if (!isLoggedIn) {
+              // Handle not logged in case
+            }
+            const magicWallet = await getMagicWallet();
+            signedTransaction = await transaction.signWithSigner(magicWallet);
+            resolve(signedTransaction);
+          } else {
+            const isTestnet = await isTestnetUser();
+            const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
+            client.setOperator(AccountId.fromString(data.request.accountId), PrivateKey.fromString(localData.privateKey));
+            signedTransaction = await transaction.signWithOperator(client);
+            resolve(signedTransaction);
+          }
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      messageBus.on("wcSignReject", onReject);
+      messageBus.on("wcSignApproved", onApprove);
     });
   }
 

@@ -99,6 +99,9 @@ export const _remove = key => {
 };
 
 export const checkForError = () => {
+    if (typeof chrome === 'undefined' || !chrome.runtime) {
+        return;
+    }
     const lastError = chrome.runtime.lastError;
     if (!lastError) {
         return;
