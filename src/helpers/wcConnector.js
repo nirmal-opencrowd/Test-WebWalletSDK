@@ -6,11 +6,7 @@ import { getExtensionMethodsFromSession } from "./Utils.js";
 import { Buffer } from "buffer";
 import {Wallet} from "@hashgraph/hedera-wallet-connect";
 import { WALLET_CONNECT_APP_ID } from "./../utils/constants.js";
-
-// chrome: chrome, edge
-// safari: safari
-// browser: firefox
-const finalBrowser = chrome || safari || browser;
+import { webStorage, messageBus } from "../services/walletService.js";
 
 export class WCConnector {
     upcomingRequests = {};
@@ -53,37 +49,44 @@ export class WCConnector {
         const showPopup = this.showPopup;
         const metaInfo = this.metaData;
         return new Promise(async (resolve, reject) => {
-            finalBrowser.storage.local.get("_decrypted", function (data) {
-                if (onlyPrivateKey) {
-                    const localData = data._decrypted;
+            const localData = webStorage.getDecrypted();
+            if (onlyPrivateKey) {
+                if (localData) {
                     resolve({grantAccess: true, pKey: localData.privateKey});
                 } else {
-                    const request = {signTransaction: true, transaction: JSON.stringify(transaction), metaData: JSON.stringify(metaInfo)};
-                    let userData = data._decrypted;
-                    if (userData) {
-                        showPopup({ isLoggedIn: true, ...request});
-                    } else {
-                        finalBrowser.storage.local.get("_encrypted", function (data) {
-                            data._encrypted ? showPopup({ isLoggedIn: false, isLocked: true, ...request }) : showPopup({ isLoggedIn: false });
-                        });
-                    }
+                    resolve({grantAccess: false});
                 }
-            });
-            function messageListener(request, sender, sendResponse) {
-              if (request.type === "wcSignReject") {
-                resolve({grantAccess: false, ...request.request});
-              }
-              if (request.type === "wcSignApproved") {
-                finalBrowser.storage.local.get("_decrypted", async function (data) {
-                  const localData = data._decrypted;
-                  resolve({grantAccess: true, pKey: localData.privateKey});
-                });
-              }
-              sendResponse({status: 'ok'});
+            } else {
+                const request = {signTransaction: true, transaction: JSON.stringify(transaction), metaData: JSON.stringify(metaInfo)};
+                if (localData) {
+                    showPopup({ isLoggedIn: true, ...request});
+                } else {
+                    const encrypted = webStorage.getEncrypted();
+                    encrypted ? showPopup({ isLoggedIn: false, isLocked: true, ...request }) : showPopup({ isLoggedIn: false });
+                }
             }
-            finalBrowser.runtime.onMessage.removeListener(messageListener);
-            finalBrowser.runtime.onMessage.addListener(messageListener);
-          });
+
+            // Listen for sign approval/rejection via messageBus
+            const onReject = (data) => {
+                messageBus.off("wcSignReject", onReject);
+                messageBus.off("wcSignApproved", onApprove);
+                resolve({grantAccess: false, ...data.request});
+            };
+
+            const onApprove = (data) => {
+                messageBus.off("wcSignReject", onReject);
+                messageBus.off("wcSignApproved", onApprove);
+                const freshData = webStorage.getDecrypted();
+                if (freshData) {
+                    resolve({grantAccess: true, pKey: freshData.privateKey});
+                } else {
+                    resolve({grantAccess: false});
+                }
+            };
+
+            messageBus.on("wcSignReject", onReject);
+            messageBus.on("wcSignApproved", onApprove);
+        });
     }
     async onSessionRequest(requestEvent) {
         const { chainId, accountId, body } = this.client.parseSessionRequest(requestEvent);
@@ -149,7 +152,9 @@ export class WCConnector {
     }
 
     async disconnect(e) {
-        e.preventDefault();
+        if (e && e.preventDefault) {
+            e.preventDefault();
+        }
         //https://docs.walletconnect.com/web3wallet/wallet-usage#session-disconnect
         for (const session of Object.values(this.client.getActiveSessions())) {
             await this.client.disconnectSession({
