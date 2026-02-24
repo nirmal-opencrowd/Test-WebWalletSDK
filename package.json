@@ -1,8 +1,8 @@
 {
-  "name": "dropp-web-wallet-sdk",
-  "version": "1.0.0",
+  "name": "web-wallet-sdk",
+  "version": "0.1.0",
   "private": true,
-  "description": "Dropp Web Wallet SDK - A web-based wallet for Hedera Hashgraph payments, converted from the Dropp Chrome Extension.",
+  "description": "Dropp Web Wallet SDK - Web version of the Dropp Chrome Extension wallet",
   "dependencies": {
     "@hashgraph/hedera-wallet-connect": "^1.4.2",
     "@hashgraph/proto": "^2.15.0",
@@ -22,13 +22,11 @@
     "axios": "^0.24.0",
     "bip39": "^3.1.0",
     "buffer": "^5.6.0",
-    "buffer-alloc": "^1.2.0",
     "camelcase": "^5.3.1",
     "crypto-js": "^4.0.0",
     "currency-symbol-map": "^5.0.1",
     "dayjs": "^1.8.35",
     "dotenv": "8.2.0",
-    "dotenv-expand": "5.1.0",
     "history": "^4.10.1",
     "html-react-parser": "^1.0.0",
     "jimp": "^1.6.0",
@@ -36,7 +34,6 @@
     "jsqr": "^1.4.0",
     "magic-sdk": "^29.0.6",
     "moment": "^2.29.1",
-    "nano-time": "^1.0.0",
     "node-forge": "^0.10.0",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
@@ -63,10 +60,9 @@
     "react-sidebar": "^3.0.2",
     "react-sliding-pane": "^7.0.0",
     "react-tooltip": "^4.2.6",
-    "resolve": "1.15.0",
+    "rimraf": "^3.0.2",
     "sass": "^1.93.2",
     "semantic-ui-react": "^2.0.1",
-    "semver": "6.3.0",
     "sha256": "^0.2.0",
     "tweetnacl": "^1.0.3",
     "utf8": "^3.0.0",
@@ -79,6 +75,11 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@babel/core": "7.9.0",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
     "prettier": "^2.1.0"
   },
   "eslintConfig": {
@@ -86,6 +87,7 @@
       "react-hooks"
     ],
     "extends": [
+      "eslint:recommended",
       "react-app"
     ],
     "rules": {
