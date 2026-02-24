@@ -4,21 +4,16 @@ import { Network } from "./Network.js";
 import { isTestnetUser } from "./Common.js";
 import { getMagicWallet } from "../utils/utils.js"
 import { magicInstance } from "../components/MagicLink/index.js";
-// For webapp, use window.localStorage instead of extension storage
+import { webStorage, messageBus } from "../services/walletService.js";
+
+// For webapp, use webStorage (localStorage wrapper) instead of extension storage
 const getDecrypted = () => {
-  try {
-    return JSON.parse(window.localStorage.getItem('_decrypted'));
-  } catch {
-    return null;
-  }
+  return webStorage.getDecrypted();
 };
 const getEncrypted = () => {
-  try {
-    return JSON.parse(window.localStorage.getItem('_encrypted'));
-  } catch {
-    return null;
-  }
+  return webStorage.getEncrypted();
 };
+
 class WalletConnectSigner {
   accountId;
   publicKey;
@@ -38,55 +33,48 @@ class WalletConnectSigner {
 
   async getAccountBalance() {
     const accountId = this.getAccountId();
-    return new Promise(async (resolve, reject) => {
-      const localData = getDecrypted();
-        let balance = {};
-        if (localData && localData.magicUser) {
-          const magic = await magicInstance();
-          const isLoggedIn = await magic.user.isLoggedIn();
-          if (!isLoggedIn) {
-            // Handle not logged in case
-          }
-          const magicWallet = await getMagicWallet();
-          balance = await magicWallet.getAccountBalance();
-        } else  if (localData && localData.privateKey) {
-          const isTestnet = await isTestnetUser();
-          const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
-          client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
-          const query = new AccountBalanceQuery()
-            .setAccountId(accountId);
-          balance = await query.execute(client);
-        }
-        resolve(balance);
-      });
-    });
+    const localData = getDecrypted();
+    let balance = {};
+    if (localData && localData.magicUser) {
+      const magic = await magicInstance();
+      const isLoggedIn = await magic.user.isLoggedIn();
+      if (!isLoggedIn) {
+        // Handle not logged in case
+      }
+      const magicWallet = await getMagicWallet();
+      balance = await magicWallet.getAccountBalance();
+    } else if (localData && localData.privateKey) {
+      const isTestnet = await isTestnetUser();
+      const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
+      client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
+      const query = new AccountBalanceQuery()
+        .setAccountId(accountId);
+      balance = await query.execute(client);
+    }
+    return balance;
   }
 
   async getAccountInfo() {
     const accountId = this.getAccountId();
-    return new Promise(async (resolve, reject) => {
-      const localData = getDecrypted();
-        let accInfo = {};
-        if (localData && localData.magicUser) {
-          const magic = await magicInstance();
-          const isLoggedIn = await magic.user.isLoggedIn();
-          if (!isLoggedIn) {
-            // Handle not logged in case
-          }
-          const magicWallet = await getMagicWallet();
-          accInfo = await magicWallet.getAccountInfo();
-        } else if (localData && localData.privateKey) {
-          const isTestnet = await isTestnetUser();
-          const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
-          client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
-          const query = new AccountInfoQuery()
-            .setAccountId(accountId);
-          accInfo = await query.execute(client);
-          resolve(accInfo);
-        }
-        resolve(accInfo);
-      });
-    });
+    const localData = getDecrypted();
+    let accInfo = {};
+    if (localData && localData.magicUser) {
+      const magic = await magicInstance();
+      const isLoggedIn = await magic.user.isLoggedIn();
+      if (!isLoggedIn) {
+        // Handle not logged in case
+      }
+      const magicWallet = await getMagicWallet();
+      accInfo = await magicWallet.getAccountInfo();
+    } else if (localData && localData.privateKey) {
+      const isTestnet = await isTestnetUser();
+      const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
+      client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
+      const query = new AccountInfoQuery()
+        .setAccountId(accountId);
+      accInfo = await query.execute(client);
+    }
+    return accInfo;
   }
 
   async populateTransaction(transaction) {
@@ -97,7 +85,7 @@ class WalletConnectSigner {
     return this.publicKey;
   }
 
-signTransaction(transaction, showPopup, metaData) {
+  signTransaction(transaction, showPopup, metaData) {
     showPopup = showPopup ? showPopup : this.approvalPopup;
     metaData = metaData ? metaData : this.connector.metadata;
     return new Promise(async (resolve, reject) => {
@@ -163,66 +151,63 @@ signTransaction(transaction, showPopup, metaData) {
   }
 
   async call(signedTransaction, isTransaction) {
-    return new Promise(async (resolve, reject) => {
-      const isTestnet = await isTestnetUser();
-      const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
-      const accountId = this.getAccountId();
-      const showPopup = this.approvalPopup;
-      const metaData = this.connector.metadata;
-      const signTxn = this.signTransaction;
-      finalBrowser.storage.local.get("_decrypted", async function (data) {
-        const localData = data._decrypted;
-        if (localData && localData.privateKey) {
-          client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
-          if (isTransaction && (signedTransaction._signerPublicKeys.size == 0 || !signedTransaction._signerPublicKeys.has(localData.publicKey))) {
-            // Ask for approval
-            const userSignedTransaction = await signTxn(signedTransaction, showPopup, metaData);
-            if (userSignedTransaction && userSignedTransaction.reason) {
-              resolve(userSignedTransaction);
-            } else {
-              try {
-                let transactionId;
-                if (localData && localData.magicUser) {
-                  const magic = await magicInstance();
-                  const isLoggedIn = await magic.user.isLoggedIn();
-                  if (!isLoggedIn) {
-                    // Handle not logged in case
-                  }
-                  const magicWallet = await getMagicWallet();
-                  transactionId = await magicWallet.call(userSignedTransaction);
-                } else {
-                  transactionId = await userSignedTransaction.execute(client);
-                }
-                resolve(transactionId);
-              } catch (error) {
-                resolve({error: error});
-              }
-            }
-          } else {
-            // Execute query and signed transaction
-            try {
-              let transactionId;
-              if (localData && localData.magicUser) {
-                const magic = await magicInstance();
-                const isLoggedIn = await magic.user.isLoggedIn();
-                if (!isLoggedIn) {
-                  // Handle not logged in case
-                }
-                const magicWallet = await getMagicWallet();
-                transactionId = await magicWallet.call(signedTransaction);
-              } else {
-                transactionId = await signedTransaction.execute(client);
-              }
-              resolve(transactionId);
-            } catch (error) {
-              resolve({error: error});
-            }
-          }
+    const isTestnet = await isTestnetUser();
+    const client = isTestnet ? Client.forTestnet() : Client.forMainnet();
+    const accountId = this.getAccountId();
+    const showPopup = this.approvalPopup;
+    const metaData = this.connector.metadata;
+    const signTxn = this.signTransaction.bind(this);
+    const localData = getDecrypted();
+
+    if (localData && localData.privateKey) {
+      client.setOperator(accountId, PrivateKey.fromString(localData.privateKey));
+      if (isTransaction && (signedTransaction._signerPublicKeys.size == 0 || !signedTransaction._signerPublicKeys.has(localData.publicKey))) {
+        // Ask for approval
+        const userSignedTransaction = await signTxn(signedTransaction, showPopup, metaData);
+        if (userSignedTransaction && userSignedTransaction.reason) {
+          return userSignedTransaction;
         } else {
-          resolve({});
+          try {
+            let transactionId;
+            if (localData && localData.magicUser) {
+              const magic = await magicInstance();
+              const isLoggedIn = await magic.user.isLoggedIn();
+              if (!isLoggedIn) {
+                // Handle not logged in case
+              }
+              const magicWallet = await getMagicWallet();
+              transactionId = await magicWallet.call(userSignedTransaction);
+            } else {
+              transactionId = await userSignedTransaction.execute(client);
+            }
+            return transactionId;
+          } catch (error) {
+            return {error: error};
+          }
         }
-      });
-    });
+      } else {
+        // Execute query and signed transaction
+        try {
+          let transactionId;
+          if (localData && localData.magicUser) {
+            const magic = await magicInstance();
+            const isLoggedIn = await magic.user.isLoggedIn();
+            if (!isLoggedIn) {
+              // Handle not logged in case
+            }
+            const magicWallet = await getMagicWallet();
+            transactionId = await magicWallet.call(signedTransaction);
+          } else {
+            transactionId = await signedTransaction.execute(client);
+          }
+          return transactionId;
+        } catch (error) {
+          return {error: error};
+        }
+      }
+    } else {
+      return {};
+    }
   }
 }
 
